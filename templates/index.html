@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Phishing Website Detector</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: white;
+            border-radius: 20px;
+            padding: 45px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        .icon {
+            font-size: 55px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #111827;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 15px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .input-label {
+            display: block;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"]:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .result-box {
+            margin-top: 30px;
+            padding: 22px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .result-box h2 {
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+
+        .result-box p {
+            font-size: 16px;
+        }
+
+        .safe {
+            background: #ecfdf5;
+            border: 2px solid #86efac;
+            color: #166534;
+        }
+
+        .phishing {
+            background: #fef2f2;
+            border: 2px solid #fca5a5;
+            color: #991b1b;
+        }
+
+        .info {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .scanning {
+            display: none;
+            margin-top: 15px;
+            color: #2563eb;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 27px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="icon">🛡️</div>
+
+        <h1>Phishing Website Detector</h1>
+
+        <p class="subtitle">
+            Detect potentially malicious websites using a
+            CNN + LSTM deep learning model.
+        </p>
+
+        <form action="/predict" method="POST" onsubmit="showScanning()">
+
+            <label class="input-label" for="url">
+                Enter Website URL
+            </label>
+
+            <input
+                type="text"
+                id="url"
+                name="url"
+                placeholder="https://example.com"
+                value="{{ url if url else '' }}"
+                required
+            >
+
+            <button type="submit">
+                🔍 Scan URL
+            </button>
+
+        </form>
+
+        <div class="scanning" id="scanning">
+            🔄 Analyzing website...
+        </div>
+
+        {% if result %}
+
+            <div class="result-box {{ 'phishing' if is_phishing else 'safe' }}">
+
+                {% if is_phishing %}
+
+                    <h2>🚨 Phishing Detected</h2>
+
+                {% else %}
+
+                    <h2>✅ Website Appears Safe</h2>
+
+                {% endif %}
+
+                <p>
+                    {{ result }}
+                </p>
+
+                <p style="margin-top: 10px;">
+                    Confidence:
+                    <strong>{{ confidence }}</strong>
+                </p>
+
+            </div>
+
+        {% endif %}
+
+        <div class="info">
+            ⚠️ This tool is a machine-learning based detector.
+            Results should not be treated as a guarantee of website safety.
+        </div>
+
+    </div>
+
+    <script>
+
+        function showScanning() {
+            document.getElementById("scanning").style.display = "block";
+        }
+
+    </script>
+
+</body>
+
+</html>
