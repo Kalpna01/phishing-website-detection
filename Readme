@@ -1,34 +1,59 @@
-# Phishing Website Detection using Deep Learning
+# Phishing Website Detection Using Deep Learning
 
-## 📌 About the Project
+This project is a **Deep Learning-based Phishing Website Detection System** that predicts whether a website URL is **Phishing** or **Legitimate**.
 
-This project uses a deep learning model to detect whether a website URL is legitimate or potentially phishing.
+## 🧠 Deep Learning Models Used
 
-The model analyzes URL-based features and predicts:
+The project uses a combination of:
 
-- ✅ Legitimate Website
-- ⚠️ Phishing Website
+* **CNN (Convolutional Neural Network)** – used to learn important patterns from the URL features.
+* **LSTM (Long Short-Term Memory)** – used to learn sequential patterns and relationships in the input data.
+
+These models are used together for phishing URL classification.
+
+The models are implemented using **TensorFlow and Keras**.
+
+## 📊 Dataset
+
+The model is trained using a **phishing website dataset** containing examples of both **phishing and legitimate URLs**.
+
+The dataset contains URL-based features that are used for training and classification.
+
+> The dataset is not included in this repository because of its large file size.
 
 ## 🛠️ Technologies Used
 
-- Python
-- TensorFlow / Keras
-- Pandas
-- NumPy
-- Scikit-learn
-- Google Colab
-- HTML
-- CSS
-- JavaScript
+* Python
+* TensorFlow
+* Keras
+* CNN
+* LSTM
+* NumPy
+* Pandas
+* Scikit-learn
+* HTML
+* CSS
+* JavaScript
+* Google Colab
 
-## 📂 Project Structure
+## 🔍 How It Works
 
 ```text
-Phishing-Website-Detection/
-│
-├── dataset/
-├── model/
-├── template/
-├── app.py
-├── requirements.txt
-└── README.md
+Website URL
+     ↓
+Feature Extraction
+     ↓
+Data Preprocessing
+     ↓
+CNN + LSTM Model
+     ↓
+Prediction
+     ↓
+Phishing / Legitimate
+```
+
+## 🎯 Objective
+
+The objective of this project is to use **Deep Learning and Cybersecurity techniques** to detect potentially phishing websites from their URLs.
+
+
