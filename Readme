@@ -1,0 +1,34 @@
+# Phishing Website Detection using Deep Learning
+
+## 📌 About the Project
+
+This project uses a deep learning model to detect whether a website URL is legitimate or potentially phishing.
+
+The model analyzes URL-based features and predicts:
+
+- ✅ Legitimate Website
+- ⚠️ Phishing Website
+
+## 🛠️ Technologies Used
+
+- Python
+- TensorFlow / Keras
+- Pandas
+- NumPy
+- Scikit-learn
+- Google Colab
+- HTML
+- CSS
+- JavaScript
+
+## 📂 Project Structure
+
+```text
+Phishing-Website-Detection/
+│
+├── dataset/
+├── model/
+├── template/
+├── app.py
+├── requirements.txt
+└── README.md
