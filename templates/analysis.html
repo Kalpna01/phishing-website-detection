@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Phishing Analysis</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+        min-height: 100vh;
+        padding: 35px 20px;
+
+        background:
+            radial-gradient(circle at top right, #1e40af, transparent 35%),
+            linear-gradient(135deg, #020617, #0f172a);
+
+        color: white;
+    }
+
+    .container {
+        max-width: 950px;
+        margin: auto;
+    }
+
+    .back {
+        display: inline-block;
+        color: #93c5fd;
+        text-decoration: none;
+        margin-bottom: 30px;
+        font-weight: 600;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .header-icon {
+        font-size: 60px;
+        margin-bottom: 12px;
+    }
+
+    h1 {
+        font-size: 38px;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        color: #94a3b8;
+        font-size: 16px;
+    }
+
+    .card {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 18px;
+        padding: 28px;
+        margin-bottom: 22px;
+
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    }
+
+    .result {
+        text-align: center;
+        border-radius: 18px;
+        padding: 30px;
+        margin-bottom: 22px;
+    }
+
+    .danger {
+        background: rgba(127,29,29,0.30);
+        border: 1px solid #ef4444;
+    }
+
+    .safe {
+        background: rgba(20,83,45,0.30);
+        border: 1px solid #22c55e;
+    }
+
+    .result h2 {
+        font-size: 28px;
+        margin-bottom: 12px;
+    }
+
+    .confidence {
+        margin-top: 12px;
+        font-size: 18px;
+    }
+
+    .risk {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 7px 18px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.10);
+        font-weight: 700;
+    }
+
+    .url-box {
+        margin-top: 15px;
+        padding: 18px;
+        background: #020617;
+        border: 1px solid #334155;
+        border-radius: 12px;
+        color: #93c5fd;
+        word-break: break-all;
+        line-height: 1.6;
+    }
+
+    h2 {
+        margin-bottom: 15px;
+        font-size: 22px;
+    }
+
+    .explanation {
+        color: #cbd5e1;
+        line-height: 1.8;
+        font-size: 15px;
+    }
+
+    .reason {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+
+        padding: 17px;
+
+        margin-bottom: 12px;
+
+        border-radius: 12px;
+
+        background: rgba(127,29,29,0.22);
+
+        border: 1px solid rgba(239,68,68,0.6);
+    }
+
+    .reason-icon {
+        font-size: 23px;
+    }
+
+    .reason-text {
+        color: #fecaca;
+        line-height: 1.6;
+    }
+
+    .safe-reason {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+
+        padding: 17px;
+
+        margin-bottom: 12px;
+
+        border-radius: 12px;
+
+        background: rgba(20,83,45,0.22);
+
+        border: 1px solid rgba(34,197,94,0.5);
+    }
+
+    .safe-reason .reason-text {
+        color: #bbf7d0;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .detail {
+        background: #020617;
+        border: 1px solid #1e293b;
+        border-radius: 12px;
+        padding: 18px;
+    }
+
+    .detail-title {
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 7px;
+    }
+
+    .detail-value {
+        color: #e2e8f0;
+        font-weight: 600;
+        word-break: break-word;
+    }
+
+    .model-box {
+        text-align: center;
+    }
+
+    .step {
+        max-width: 500px;
+        margin: 10px auto;
+        padding: 15px;
+
+        background: #020617;
+
+        border: 1px solid #334155;
+
+        border-radius: 12px;
+
+        color: #e2e8f0;
+    }
+
+    .arrow {
+        color: #60a5fa;
+        font-size: 22px;
+    }
+
+    .warning {
+        background: rgba(146,64,14,0.22);
+        border: 1px solid #f59e0b;
+        border-radius: 15px;
+        padding: 25px;
+    }
+
+    .warning h2 {
+        color: #fbbf24;
+    }
+
+    .warning p {
+        color: #fde68a;
+        line-height: 1.7;
+    }
+
+    .button {
+        display: inline-block;
+        margin-top: 18px;
+
+        padding: 13px 22px;
+
+        background: #2563eb;
+
+        color: white;
+
+        text-decoration: none;
+
+        border-radius: 10px;
+
+        font-weight: 600;
+    }
+
+    @media(max-width:650px) {
+
+        h1 {
+            font-size: 29px;
+        }
+
+        .grid {
+            grid-template-columns: 1fr;
+        }
+
+        .card {
+            padding: 20px;
+        }
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<a href="/" class="back">
+    ← Back to Scanner
+</a>
+
+
+{% if no_data %}
+
+    <div class="header">
+
+        <div class="header-icon">
+            🔎
+        </div>
+
+        <h1>
+            No Analysis Available
+        </h1>
+
+        <p class="subtitle">
+            Please scan a URL first.
+        </p>
+
+    </div>
+
+{% else %}
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="header-icon">
+            🔬
+        </div>
+
+        <h1>
+            Why Was This URL Flagged?
+        </h1>
+
+        <p class="subtitle">
+            Detailed explanation of the URL classification
+        </p>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div class="result
+        {{ 'danger' if data.is_phishing else 'safe' }}">
+
+        {% if data.is_phishing %}
+
+            <h2>
+                🚨 Potential Phishing Website
+            </h2>
+
+            <p>
+                The model detected characteristics associated
+                with potentially malicious URLs.
+            </p>
+
+        {% else %}
+
+            <h2>
+                ✅ Website Appears Safe
+            </h2>
+
+            <p>
+                The model did not detect strong phishing
+                characteristics.
+            </p>
+
+        {% endif %}
+
+
+        <div class="confidence">
+
+            Model Confidence:
+            <strong>
+                {{ data.confidence }}
+            </strong>
+
+        </div>
+
+
+        <div class="risk">
+            Risk Level: {{ data.risk_level }}
+        </div>
+
+    </div>
+
+
+    <!-- URL -->
+
+    <div class="card">
+
+        <h2>
+            🔗 URL You Entered
+        </h2>
+
+        <div class="url-box">
+            {{ data.url }}
+        </div>
+
+    </div>
+
+
+    <!-- MAIN EXPLANATION -->
+
+    <div class="card">
+
+        <h2>
+            🧠 What Does The Result Mean?
+        </h2>
+
+        <p class="explanation">
+            {{ data.explanation }}
+        </p>
+
+    </div>
+
+
+    <!-- WHY PHISHING -->
+
+    {% if data.is_phishing %}
+
+    <div class="card">
+
+        <h2>
+            🚨 Why Does This URL Look Suspicious?
+        </h2>
+
+
+        {% if data.indicators %}
+
+            {% for item in data.indicators %}
+
+            <div class="reason">
+
+                <div class="reason-icon">
+                    ⚠️
+                </div>
+
+                <div class="reason-text">
+
+                    <strong>
+                        Suspicious characteristic
+                    </strong>
+
+                    <br>
+
+                    {{ item }}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="reason">
+
+                <div class="reason-icon">
+                    🧠
+                </div>
+
+                <div class="reason-text">
+
+                    The deep learning model detected a
+                    potentially phishing pattern in the URL.
+                    No additional rule-based indicators were
+                    identified.
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- URL DETAILS -->
+
+    <div class="card">
+
+        <h2>
+            📊 URL Structure
+        </h2>
+
+        <div class="grid">
+
+
+            <div class="detail">
+
+                <div class="detail-title">
+                    🌐 Domain
+                </div>
+
+                <div class="detail-value">
+                    {{ data.details.domain }}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-title">
+                    🔐 Protocol
+                </div>
+
+                <div class="detail-value">
+                    {{ data.details.protocol }}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-title">
+                    📏 URL Length
+                </div>
+
+                <div class="detail-value">
+                    {{ data.details.length }} characters
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-title">
+                    ➖ Hyphens
+                </div>
+
+                <div class="detail-value">
+                    {{ data.details.hyphens }}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-title">
+                    🌳 Subdomains
+                </div>
+
+                <div class="detail-value">
+                    {{ data.details.subdomains }}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-title">
+                    🔒 HTTPS
+                </div>
+
+                <div class="detail-value">
+
+                    {% if data.details.https %}
+                        ✅ Enabled
+                    {% else %}
+                        ❌ Not detected
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-title">
+                    🖥️ IP Address
+                </div>
+
+                <div class="detail-value">
+
+                    {% if data.details.ip_address %}
+                        ⚠️ Yes
+                    {% else %}
+                        ✅ No
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <div class="detail-title">
+                    📁 Path
+                </div>
+
+                <div class="detail-value">
+                    {{ data.details.path }}
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- OTHER CHARACTERISTICS -->
+
+    {% if data.positive_indicators %}
+
+    <div class="card">
+
+        <h2>
+            🟢 Other URL Characteristics
+        </h2>
+
+
+        {% for item in data.positive_indicators %}
+
+        <div class="safe-reason">
+
+            <div class="reason-icon">
+                ✓
+            </div>
+
+            <div class="reason-text">
+
+                {{ item }}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- MODEL EXPLANATION -->
+
+    <div class="card model-box">
+
+        <h2>
+            🧠 How Did The CNN + LSTM Detect It?
+        </h2>
+
+
+        <div class="step">
+            🔗 URL entered by user
+        </div>
+
+        <div class="arrow">
+            ↓
+        </div>
+
+        <div class="step">
+            🧹 URL preprocessing
+        </div>
+
+        <div class="arrow">
+            ↓
+        </div>
+
+        <div class="step">
+            🔤 Tokenization
+        </div>
+
+        <div class="arrow">
+            ↓
+        </div>
+
+        <div class="step">
+            🧠 CNN learns local URL patterns
+        </div>
+
+        <div class="arrow">
+            ↓
+        </div>
+
+        <div class="step">
+            🔄 LSTM analyzes URL sequence patterns
+        </div>
+
+        <div class="arrow">
+            ↓
+        </div>
+
+        <div class="step">
+            🎯 Phishing / Safe prediction
+        </div>
+
+
+    </div>
+
+
+    <!-- SAFETY -->
+
+    <div class="warning">
+
+        <h2>
+            🛡️ What Should You Do?
+        </h2>
+
+        {% if data.is_phishing %}
+
+        <p>
+
+            This URL has been classified as potentially
+            phishing. Do not enter passwords, OTPs,
+            banking details, card information or other
+            sensitive information on the website.
+
+            <br><br>
+
+            If you need to visit the service, type its
+            official website address manually or use a
+            trusted bookmark.
+
+        </p>
+
+        {% else %}
+
+        <p>
+
+            The model classified this URL as likely safe.
+            However, machine-learning predictions cannot
+            guarantee that a website is completely safe.
+
+            <br><br>
+
+            Always verify unfamiliar websites before
+            entering sensitive information.
+
+        </p>
+
+        {% endif %}
+
+        <a href="/" class="button">
+            🔍 Scan Another URL
+        </a>
+
+    </div>
+
+
+{% endif %}
+```
+
+</div>
+
+</body>
+
+</html>
+
