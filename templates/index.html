@@ -1,233 +1,570 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Phishing Website Detector</title>
+```
+<meta charset="UTF-8">
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: "Segoe UI", Arial, sans-serif;
-        }
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-        body {
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #0f172a, #1e3a8a);
-            padding: 20px;
-        }
+<title>Phishing Website Detector</title>
 
-        .container {
-            width: 100%;
-            max-width: 650px;
-            background: white;
-            border-radius: 20px;
-            padding: 45px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
-            text-align: center;
-        }
+<style>
 
-        .icon {
-            font-size: 55px;
-            margin-bottom: 10px;
-        }
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+
+        min-height: 100vh;
+
+        background:
+            radial-gradient(circle at top left,
+                #1e40af,
+                transparent 35%),
+
+            linear-gradient(
+                135deg,
+                #020617,
+                #0f172a
+            );
+
+        color: white;
+
+        padding: 30px 20px;
+
+    }
+
+    .container {
+
+        max-width: 850px;
+
+        margin: auto;
+
+        padding-top: 45px;
+
+    }
+
+    .header {
+
+        text-align: center;
+
+        margin-bottom: 40px;
+
+    }
+
+    .shield {
+
+        font-size: 65px;
+
+        margin-bottom: 15px;
+
+    }
+
+    h1 {
+
+        font-size: 42px;
+
+        margin-bottom: 12px;
+
+    }
+
+    .subtitle {
+
+        color: #cbd5e1;
+
+        font-size: 17px;
+
+        line-height: 1.6;
+
+        max-width: 650px;
+
+        margin: auto;
+
+    }
+
+    .scanner {
+
+        background:
+            rgba(255,255,255,0.07);
+
+        border:
+            1px solid rgba(255,255,255,0.15);
+
+        backdrop-filter: blur(15px);
+
+        border-radius: 22px;
+
+        padding: 35px;
+
+        box-shadow:
+            0 25px 60px rgba(0,0,0,0.35);
+
+    }
+
+    label {
+
+        display: block;
+
+        margin-bottom: 10px;
+
+        font-weight: 600;
+
+    }
+
+    input {
+
+        width: 100%;
+
+        padding: 17px;
+
+        border-radius: 12px;
+
+        border: 2px solid #334155;
+
+        background: #020617;
+
+        color: white;
+
+        font-size: 16px;
+
+        outline: none;
+
+        margin-bottom: 15px;
+
+    }
+
+    input:focus {
+
+        border-color: #3b82f6;
+
+    }
+
+    button {
+
+        width: 100%;
+
+        padding: 17px;
+
+        border: none;
+
+        border-radius: 12px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2563eb,
+                #4f46e5
+            );
+
+        color: white;
+
+        font-size: 17px;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition: 0.3s;
+
+    }
+
+    button:hover {
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 10px 25px
+            rgba(37,99,235,0.35);
+
+    }
+
+    .result {
+
+        margin-top: 25px;
+
+        padding: 28px;
+
+        border-radius: 17px;
+
+        text-align: center;
+
+    }
+
+    .phishing {
+
+        background:
+            rgba(127,29,29,0.3);
+
+        border:
+            1px solid #ef4444;
+
+    }
+
+    .safe {
+
+        background:
+            rgba(20,83,45,0.3);
+
+        border:
+            1px solid #22c55e;
+
+    }
+
+    .result h2 {
+
+        font-size: 27px;
+
+        margin-bottom: 10px;
+
+    }
+
+    .confidence {
+
+        font-size: 18px;
+
+        margin-top: 12px;
+
+    }
+
+    .risk {
+
+        display: inline-block;
+
+        margin-top: 12px;
+
+        padding: 7px 15px;
+
+        border-radius: 20px;
+
+        background:
+            rgba(255,255,255,0.1);
+
+        font-weight: 700;
+
+    }
+
+    .details-btn {
+
+        display: inline-block;
+
+        margin-top: 20px;
+
+        padding: 13px 22px;
+
+        border-radius: 10px;
+
+        background: white;
+
+        color: #111827;
+
+        text-decoration: none;
+
+        font-weight: 600;
+
+    }
+
+    .features {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 15px;
+
+        margin-top: 35px;
+
+    }
+
+    .feature {
+
+        background:
+            rgba(255,255,255,0.06);
+
+        padding: 20px;
+
+        border-radius: 15px;
+
+        text-align: center;
+
+        border:
+            1px solid
+            rgba(255,255,255,0.1);
+
+    }
+
+    .feature-icon {
+
+        font-size: 30px;
+
+        margin-bottom: 10px;
+
+    }
+
+    .feature h3 {
+
+        font-size: 16px;
+
+        margin-bottom: 6px;
+
+    }
+
+    .feature p {
+
+        font-size: 13px;
+
+        color: #94a3b8;
+
+        line-height: 1.5;
+
+    }
+
+    .footer {
+
+        text-align: center;
+
+        margin-top: 30px;
+
+        color: #64748b;
+
+        font-size: 13px;
+
+        line-height: 1.5;
+
+    }
+
+    @media(max-width:650px) {
 
         h1 {
-            color: #111827;
-            font-size: 32px;
-            margin-bottom: 10px;
+
+            font-size: 30px;
+
         }
 
-        .subtitle {
-            color: #6b7280;
-            font-size: 15px;
-            margin-bottom: 30px;
-            line-height: 1.5;
+        .features {
+
+            grid-template-columns: 1fr;
+
         }
 
-        .input-label {
-            display: block;
-            text-align: left;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 8px;
+        .scanner {
+
+            padding: 25px;
+
         }
 
-        input[type="text"] {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #d1d5db;
-            border-radius: 10px;
-            font-size: 16px;
-            outline: none;
-            transition: 0.3s;
-            margin-bottom: 15px;
-        }
+    }
 
-        input[type="text"]:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
+</style>
+```
 
-        button {
-            width: 100%;
-            padding: 15px;
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 17px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: #1d4ed8;
-            transform: translateY(-1px);
-        }
-
-        .result-box {
-            margin-top: 30px;
-            padding: 22px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .result-box h2 {
-            margin-bottom: 10px;
-            font-size: 22px;
-        }
-
-        .result-box p {
-            font-size: 16px;
-        }
-
-        .safe {
-            background: #ecfdf5;
-            border: 2px solid #86efac;
-            color: #166534;
-        }
-
-        .phishing {
-            background: #fef2f2;
-            border: 2px solid #fca5a5;
-            color: #991b1b;
-        }
-
-        .info {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
-            color: #9ca3af;
-            font-size: 13px;
-        }
-
-        .scanning {
-            display: none;
-            margin-top: 15px;
-            color: #2563eb;
-            font-size: 14px;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 30px 20px;
-            }
-
-            h1 {
-                font-size: 27px;
-            }
-        }
-    </style>
 </head>
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <div class="icon">🛡️</div>
+```
+<!-- HEADER -->
 
-        <h1>Phishing Website Detector</h1>
+<div class="header">
 
-        <p class="subtitle">
-            Detect potentially malicious websites using a
-            CNN + LSTM deep learning model.
-        </p>
+    <div class="shield">
+        🛡️
+    </div>
 
-        <form action="/predict" method="POST" onsubmit="showScanning()">
+    <h1>
+        Phishing Website Detector
+    </h1>
 
-            <label class="input-label" for="url">
-                Enter Website URL
-            </label>
+    <p class="subtitle">
 
-            <input
-                type="text"
-                id="url"
-                name="url"
-                placeholder="https://example.com"
-                value="{{ url if url else '' }}"
-                required
-            >
+        Analyze suspicious URLs using a
+        <strong>CNN + LSTM deep learning model</strong>
+        combined with URL security analysis.
 
-            <button type="submit">
-                🔍 Scan URL
-            </button>
+    </p>
 
-        </form>
+</div>
 
-        <div class="scanning" id="scanning">
-            🔄 Analyzing website...
-        </div>
 
-        {% if result %}
+<!-- SCANNER -->
 
-            <div class="result-box {{ 'phishing' if is_phishing else 'safe' }}">
+<div class="scanner">
 
-                {% if is_phishing %}
+    <form action="/predict"
+          method="POST">
 
-                    <h2>🚨 Phishing Detected</h2>
+        <label for="url">
+            🔗 Enter Website URL
+        </label>
 
-                {% else %}
+        <input
+            type="text"
+            id="url"
+            name="url"
+            placeholder="https://example.com"
+            value="{{ url if url else '' }}"
+            required
+        >
 
-                    <h2>✅ Website Appears Safe</h2>
+        <button type="submit">
 
-                {% endif %}
+            🔍 Analyze Website
 
-                <p>
-                    {{ result }}
-                </p>
+        </button>
 
-                <p style="margin-top: 10px;">
-                    Confidence:
-                    <strong>{{ confidence }}</strong>
-                </p>
+    </form>
 
-            </div>
+
+    <!-- RESULT -->
+
+    {% if result %}
+
+    <div class="result
+        {{ 'phishing' if is_phishing else 'safe' }}">
+
+        {% if is_phishing %}
+
+            <h2>
+                🚨 Phishing Detected
+            </h2>
+
+        {% else %}
+
+            <h2>
+                ✅ Website Appears Safe
+            </h2>
 
         {% endif %}
 
-        <div class="info">
-            ⚠️ This tool is a machine-learning based detector.
-            Results should not be treated as a guarantee of website safety.
+
+        <p>
+            {{ result }}
+        </p>
+
+
+        <div class="confidence">
+
+            Model Confidence:
+            <strong>
+                {{ confidence }}
+            </strong>
+
         </div>
+
+
+        <div class="risk">
+
+            Risk Level:
+            {{ risk_level }}
+
+        </div>
+
+
+        <br>
+
+
+        <a
+            class="details-btn"
+            href="/analysis">
+
+            🔎 View Detailed URL Analysis →
+
+        </a>
 
     </div>
 
-    <script>
+    {% endif %}
 
-        function showScanning() {
-            document.getElementById("scanning").style.display = "block";
-        }
+</div>
 
-    </script>
+
+<!-- FEATURES -->
+
+<div class="features">
+
+
+    <div class="feature">
+
+        <div class="feature-icon">
+            🧠
+        </div>
+
+        <h3>
+            CNN + LSTM
+        </h3>
+
+        <p>
+
+            Deep learning model analyzes
+            URL patterns and sequences.
+
+        </p>
+
+    </div>
+
+
+    <div class="feature">
+
+        <div class="feature-icon">
+            🔎
+        </div>
+
+        <h3>
+            URL Analysis
+        </h3>
+
+        <p>
+
+            Checks URL structure,
+            keywords and suspicious patterns.
+
+        </p>
+
+    </div>
+
+
+    <div class="feature">
+
+        <div class="feature-icon">
+            🛡️
+        </div>
+
+        <h3>
+            Security Guidance
+        </h3>
+
+        <p>
+
+            Provides safety information
+            after detection.
+
+        </p>
+
+    </div>
+
+
+</div>
+
+
+<div class="footer">
+
+    ⚠️ Machine-learning predictions are not a guarantee
+    of website safety.
+
+</div>
+```
+
+</div>
 
 </body>
 
